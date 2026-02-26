@@ -1,0 +1,50 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/self-modify-gate.sh" },
+          { "type": "command", "command": ".claude/hooks/circuit-breaker.sh" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|Bash|Task",
+        "hooks": [
+          { "type": "command", "command": "node .claude/hooks/post-tool-track.js" },
+          { "type": "command", "command": ".claude/hooks/audit-trail.sh" }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/circuit-breaker.sh" }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/skill-activation-prompt.sh" }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node .claude/hooks/session-start.js" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node .claude/hooks/stop-finalize.js" },
+          { "type": "command", "command": ".claude/hooks/session-end-log.sh" }
+        ]
+      }
+    ]
+  }
+}
