@@ -5,7 +5,8 @@
         "matcher": "Edit|Write|NotebookEdit",
         "hooks": [
           { "type": "command", "command": ".claude/hooks/self-modify-gate.sh" },
-          { "type": "command", "command": ".claude/hooks/circuit-breaker.sh" }
+          { "type": "command", "command": ".claude/hooks/circuit-breaker.sh" },
+          { "type": "command", "command": ".claude/hooks/quality-gate.sh" }
         ]
       }
     ],
@@ -14,7 +15,10 @@
         "matcher": "Edit|Write|NotebookEdit|Bash|Task",
         "hooks": [
           { "type": "command", "command": "node .claude/hooks/post-tool-track.js" },
-          { "type": "command", "command": ".claude/hooks/audit-trail.sh" }
+          { "type": "command", "command": ".claude/hooks/audit-trail.sh" },
+          { "type": "command", "command": ".claude/hooks/file-link-tracker.sh" },
+          { "type": "command", "command": ".claude/hooks/gsd-context-monitor.sh" },
+          { "type": "command", "command": ".claude/hooks/mcp-health-check.sh" }
         ]
       },
       {
@@ -27,7 +31,8 @@
     "UserPromptSubmit": [
       {
         "hooks": [
-          { "type": "command", "command": ".claude/hooks/skill-activation-prompt.sh" }
+          { "type": "command", "command": ".claude/hooks/skill-activation-prompt.sh" },
+          { "type": "command", "command": ".claude/hooks/session-logger.sh" }
         ]
       }
     ],
@@ -43,6 +48,20 @@
         "hooks": [
           { "type": "command", "command": "node .claude/hooks/stop-finalize.js" },
           { "type": "command", "command": ".claude/hooks/session-end-log.sh" }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/pre-compact.sh" }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/notification.sh" }
         ]
       }
     ]

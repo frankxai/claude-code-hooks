@@ -18,6 +18,8 @@
 
 Claude Code hooks are shell scripts and Node.js modules that run automatically during AI coding sessions. They intercept lifecycle events — before edits, after tool calls, on session start/stop — giving you control over quality, safety, and intelligence.
 
+Supports the full 5-harness fleet + grok-personal excellence layer (the 4 .grok-native seeds + personal-creative per claude-code-config/SHARING.md). Excellence gates (quality-gate, pre-compact) enforce Frank DNA + rules first + core vs grok-personal/personal-creative partition. Portable across Claude, Grok TUI, agy, gemini. See SHARING.md for the "a bit magical, not for everything" discipline.
+
 ```
 You edit a file → Quality Gate checks token compliance → PASS → Edit proceeds
 You edit a file → Quality Gate detects hardcoded color → BLOCK → Suggests token
@@ -32,6 +34,8 @@ cd claude-code-hooks
 ```
 
 Or copy individual hooks to your `.claude/hooks/` directory.
+
+**Multi-harness / Grok support:** `./install.sh --multi` or `--portable` seeds for claude/codex/gemini/agy/grok (via hook-env detection). For Grok, also seeds `~/.grok/hooks/*.json` for native SessionStart/PreToolUse excellence gates (Kenya-magical per SHARING.md + SIP §5: the excellence hooks stay sovereign in .grok/ only; core hooks portable to all). Kenya magical (Grok .grok excellence tuned for TUI/subagents/MCP/image + personal) not shared to ACOS core.
 
 ## The 15 Hooks
 
