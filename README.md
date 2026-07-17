@@ -39,7 +39,7 @@ Or copy individual hooks to your `.claude/hooks/` directory.
 
 ## The Hooks
 
-`hooks/` ships ~30 files: most lifecycle hooks are a thin portable `.sh` wrapper (sources `hooks/lib/hook-env.sh` for multi-harness detection) backing onto a `.js`/`.ts` file with the real logic. `settings-example.json` is the canonical wired set — 15 hook registrations across 8 lifecycle events:
+`hooks/` ships ~30 files: most lifecycle hooks are a thin portable `.sh` wrapper (sources `hooks/lib/hook-env.sh` for multi-harness detection) backing onto a `.js`/`.ts` file with the real logic. `settings-example.json` is the canonical wired set — 16 hook registrations (15 unique hooks; `circuit-breaker.sh` is wired both pre- and post-tool-use) across 7 lifecycle events:
 
 ### Lifecycle: Session Start
 | Hook | Purpose |
