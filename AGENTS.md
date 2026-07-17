@@ -1,13 +1,17 @@
-﻿# Repository Instructions
+﻿# Claude Code Hooks — Agent Instructions
 
 This repo is part of the FrankX / Starlight / Arcanea agent estate.
 
 ## Classification
 
-- Repo: $title
-- Class: $Classification
-- Default health command: $HealthCommand
-- Remote: $Remote
+- Repo: `claude-code-hooks`
+- Class: portable hook library, extracted from `agentic-creator-os`
+- Default health command: `for f in hooks/*.sh; do bash -n "$f" || echo "FAIL $f"; done` (syntax check; no automated test runner exists — `test/_evidence/hooks-tests.log` is a manually captured log, not a script)
+- Remote: https://github.com/frankxai/claude-code-hooks
+
+## What this repo is
+
+A portable Claude Code (+ Codex/Gemini/agy/Grok) hook library: `hooks/*.sh` are thin multi-harness wrappers (via `hooks/lib/hook-env.sh`) around `.js`/`.ts` implementations. `settings-example.json` is the canonical wired configuration — the source of truth for which hooks are actually active vs. experimental/unwired. `install.sh` copies hooks into a target repo's `.claude/hooks/`; `install.sh --multi`/`--portable` also seeds Grok-native `.grok/hooks/*.json`.
 
 ## Agent Rules
 

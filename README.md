@@ -37,46 +37,57 @@ Or copy individual hooks to your `.claude/hooks/` directory.
 
 **Multi-harness / Grok support:** `./install.sh --multi` or `--portable` seeds for claude/codex/gemini/agy/grok (via hook-env detection). For Grok, also seeds `~/.grok/hooks/*.json` for native SessionStart/PreToolUse excellence gates (Kenya-magical per SHARING.md + SIP §5: the excellence hooks stay sovereign in .grok/ only; core hooks portable to all). Kenya magical (Grok .grok excellence tuned for TUI/subagents/MCP/image + personal) not shared to ACOS core.
 
-## The 15 Hooks
+## The Hooks
+
+`hooks/` ships ~30 files: most lifecycle hooks are a thin portable `.sh` wrapper (sources `hooks/lib/hook-env.sh` for multi-harness detection) backing onto a `.js`/`.ts` file with the real logic. `settings-example.json` is the canonical wired set — 15 hook registrations across 8 lifecycle events:
 
 ### Lifecycle: Session Start
 | Hook | Purpose |
 |------|---------|
 | `session-start.js` | Initialize session context, load previous state |
-| `skill-activation-prompt.sh` | Auto-detect project context and load matching skills |
 
 ### Lifecycle: Pre-Tool Use (Before Edits)
 | Hook | Purpose |
 |------|---------|
-| `quality-gate.sh` | Block edits that violate code standards, token compliance |
-| `circuit-breaker.sh` | Detect retry loops and halt before wasting context |
-| `self-modify-gate.sh` | Prevent AI from modifying its own configuration |
+| `self-modify-gate.sh` | Prevent AI from modifying its own hook/config files |
+| `circuit-breaker.sh` | Detect retry loops (3 warn / 5 restrict / 8 block thresholds) |
+| `quality-gate.sh` | Wrapper for `quality-gate.js` — blocks edits that violate code standards, token compliance |
 
 ### Lifecycle: Post-Tool Use (After Actions)
 | Hook | Purpose |
 |------|---------|
 | `post-tool-track.js` | Track tool usage patterns for learning |
 | `audit-trail.sh` | Append-only log of every file modification |
-| `circuit-breaker-post.sh` | Count failures: 3 warn, 5 restrict, 8 block |
-| `context-budget-tracker.ts` | Monitor context window usage |
-| `activation-logger.sh` | Log which skills activated and why |
+| `file-link-tracker.sh` | Track file references across a session |
+| `gsd-context-monitor.sh` | Wrapper for `gsd-context-monitor.js` — context-usage monitoring |
+| `mcp-health-check.sh` | Wrapper for `mcp-health-check.js` — flags broken/misconfigured MCP servers |
+| `circuit-breaker.sh` | Also runs post-edit (same file as the pre-tool-use entry above) |
 
 ### Lifecycle: User Prompt Submit
 | Hook | Purpose |
 |------|---------|
-| `skill-activation-prompt.js` | Match keywords to skills, load context |
+| `skill-activation-prompt.sh` | Wrapper for `skill-activation-prompt.js`/`.ts` — matches keywords/file patterns to skills |
+| `session-logger.sh` | Persistent session history |
 
 ### Lifecycle: Pre-Compact (Before Context Compression)
 | Hook | Purpose |
 |------|---------|
-| `context-preservation.sh` | Save critical context before compression |
+| `pre-compact.sh` | Wrapper for `pre-compact.js` — currently a stub; extend with real context-preservation logic before relying on it |
 
 ### Lifecycle: Stop (Session End)
 | Hook | Purpose |
 |------|---------|
 | `stop-finalize.js` | Save session state, generate summary |
 | `session-end-log.sh` | Log session metrics and outcomes |
-| `session-logger.sh` | Persistent session history |
+
+### Lifecycle: Notification
+| Hook | Purpose |
+|------|---------|
+| `notification.sh` | Portable notification dispatch |
+
+### Unwired (present in `hooks/`, not in `settings-example.json`)
+
+`activation-logger.sh`, `context-budget-tracker.ts`, `excellence-hook.sh`, `memory-check.sh`, `pre-commit.sh`, `gsd-statusline.js`/`.sh`, `gsd-workflow-guard.js`/`.sh` exist as standalone scripts but aren't referenced by the example config — wire them manually if you want them, or treat them as experimental/reference implementations.
 
 ## How It Works
 
